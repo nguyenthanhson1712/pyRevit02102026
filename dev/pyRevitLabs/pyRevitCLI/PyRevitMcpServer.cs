@@ -168,6 +168,10 @@ namespace pyRevitCLI {
                     });
                 case "lookup_pyrevit_api":
                     return PyRevitLibraryIndex.Lookup(arguments.Value<string>("query"));
+                case "list_automation":
+                    return PyRevitLibraryIndex.ListAutomation(
+                        arguments.Value<int?>("offset") ?? 0,
+                        arguments.Value<int?>("limit") ?? 25);
                 case "lookup_revit_api":
                     return CallRevit(arguments, "lookup_api", new JObject { ["name"] = arguments["name"] });
                 case "show_elements":
@@ -481,6 +485,13 @@ namespace pyRevitCLI {
                     new JObject {
                         ["query"] = new JObject { ["type"] = "string", ["description"] = "Module, function or class name, or search words." },
                     }, new[] { "query" }, readOnly: true),
+
+                Tool("list_automation",
+                    "List the reviewed pyRevit and rpw automation APIs by stable identifier. Results are paginated and work without Revit.",
+                    new JObject {
+                        ["offset"] = new JObject { ["type"] = "integer", ["minimum"] = 0, ["description"] = "Zero-based result offset." },
+                        ["limit"] = new JObject { ["type"] = "integer", ["minimum"] = 1, ["maximum"] = 50, ["description"] = "Results to return, default 25." },
+                    }, new string[0], readOnly: true),
 
                 Tool("lookup_revit_api",
                     "Look up a Revit API type or member in the running Revit version, e.g. 'Wall', 'Autodesk.Revit.DB.Wall', 'Wall.Create', 'ElementId.Value'. Returns signatures, enum values and obsolete markers.",
