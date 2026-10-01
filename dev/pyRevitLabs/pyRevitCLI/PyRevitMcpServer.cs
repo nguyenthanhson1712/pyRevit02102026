@@ -155,6 +155,8 @@ namespace pyRevitCLI {
             switch (name) {
                 case "get_skill":
                     return new JValue(PyRevitAgentSkills.Read(arguments.Value<string>("name"), arguments.Value<string>("file")));
+                case "list_skills":
+                    return PyRevitAgentSkills.List();
                 case "list_revit_instances":
                     return ListInstances();
                 case "get_context":
@@ -406,9 +408,13 @@ namespace pyRevitCLI {
 
             var skills = PyRevitAgentSkills.Load();
             return new JArray(
+                Tool("list_skills",
+                    "List the available task skills with their source and content hash. User skills are disabled until the user explicitly enables them in pyRevit configuration.",
+                    new JObject(), new string[0], readOnly: true),
+
                 Tool("get_skill",
                     "Read a skill: task guidance for Revit scripting. Read revit-scripting before your first script, then the skill for your task. "
-                    + "Skills: " + string.Join("; ", skills.Select(skill => skill.Name + " - " + skill.Description)),
+                    + "Use list_skills for source and hash metadata. Skills: " + string.Join(", ", skills.Select(skill => skill.Name)),
                     new JObject {
                         ["name"] = new JObject {
                             ["type"] = "string",
