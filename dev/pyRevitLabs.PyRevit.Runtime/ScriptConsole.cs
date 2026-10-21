@@ -302,6 +302,9 @@ namespace PyRevitLabs.PyRevit.Runtime {
             _webView.DocumentReady += WebView_DocumentReady;
 
             InitializeComponent();
+
+            Topmost = true;
+            IsAutoCollapseActive = false;
         }
 
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -400,8 +403,8 @@ namespace PyRevitLabs.PyRevit.Runtime {
 
             #endregion
 
-            this.Width = 900; this.MinWidth = 700;
-            this.Height = 600; this.MinHeight = this.TitleBarHeight;
+            this.Width = 700; this.MinWidth = 700;
+            this.Height = 290; this.MinHeight = this.TitleBarHeight;
             this.ResizeMode = ResizeMode.CanResize;
 
             // setup auto-collapse
